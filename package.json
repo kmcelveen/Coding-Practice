@@ -1,0 +1,25 @@
+{
+  "name": "algorithms",
+  "version": "1.0.0",
+  "description": "Coding Practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kmcelveen/Coding-Practice.git"
+  },
+  "author": "Kristina McElveen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kmcelveen/Coding-Practice/issues"
+  },
+  "homepage": "https://github.com/kmcelveen/Coding-Practice#readme",
+  "dependencies": {
+    "chai": "^3.5.0",
+    "jquery": "^3.1.0",
+    "mocha": "^3.0.2",
+    "underscore": "^1.8.3"
+  }
+}
