@@ -57,62 +57,81 @@ Resize the hash table:
 
 */
 
-// Simple hashing function to use in your implementation
-function simpleHash(str, tableSize) {
-  var hash = 0;
-  for (var i=0; i<str.length; i++) {
-    hash += str.charCodeAt(i) * (i+1);
-  }
-  return hash % tableSize;
-}
-// source: http://pmav.eu/stuff/javascript-hashing-functions/source.html
+var LimitedArray = function(limit){
+  var storage = [];
 
-function HashTable(/* ??? */) {
-  // implement me...
-}
-
-// This is a helper method that you may want to implement to help keep your code DRY
-// You can implement the hash table methods without it.
-// I recommend skipping it and coming back if you find that it will be useful
-HashTable.prototype.find = function(key) {
-  // implement me...
-  return {
-    match: match,
-    bucket: bucket,
-    matchIndex: matchIndex
+  var limitedArray = {};
+  limitedArray.get = function(index){
+    checkLimit(index);
+    return storage[index];
   };
+  limitedArray.set = function(index, value){
+    checkLimit(index);
+    storage[index] = value;
+  };
+  limitedArray.each = function(callback){
+    for(var i = 0; i < storage.length; i++){
+      callback(storage[i], i, storage);
+    }
+  };
+
+  var checkLimit = function(index){
+    if(typeof index !== 'number'){ throw new Error('setter requires a numeric index for its first argument'); }
+    if(limit <= index){ throw new Error('Error trying to access an over-the-limit index'); }
+  };
+
+  return limitedArray;
 };
 
-HashTable.prototype.set = function(key, value) {
-  // implement me...
+//Hash function that I borrowed 
+var getIndexBelowMaxForKey = function(str, max){
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    hash = (hash<<5) + hash + str.charCodeAt(i);
+    hash = hash & hash; // Convert to 32bit integer
+    hash = Math.abs(hash);
+  }
+  return hash % max;
 };
-// Time complexity:
 
-HashTable.prototype.get = function(key) {
-  // implement me...
+var HashTable = function(){
+  this._limit = 8;
+  this._storage = LimitedArray(this._limit);
 };
-// Time complexity:
 
-HashTable.prototype.has = function(key) {
-  // implement me...
-};
-// Time complexity:
+HashTable.prototype.insert = function(key, value){
+   var i = getIndexBelowMaxForKey(key, this._limit); 
+  
+  if(this._storage.get(i) === undefined){ 
+      this._storage.set(i, []);
+  }
+    this._storage.get(i).push(key, value); 
+ };
+ 
+ HashTable.prototype.retrieve = function(key){
+   var i = getIndexBelowMaxForKey(key, this._limit);
+    for(var j = 0; j < this._storage.get(i).length; j++){ 
+      if(key === this._storage.get(i)[j]){ 
+        return this._storage.get(i)[j + 1]; 
+      }
+    }
 
-HashTable.prototype.delete = function(key) {
-  // implement me...
-};
-// Time complexity:
-
-HashTable.prototype.count = function() {
-  // implement me...
-};
-// Time complexity:
-
-HashTable.prototype.forEach = function(callback) {
-  // implement me...
-};
-// Time complexity:
-
+ 
+ };
+ 
+HashTable.prototype.remove = function(key){
+   var i = getIndexBelowMaxForKey(key, this._limit);
+  this._storage.each(function(innerArray, j, limitedArrayStorage) { 
+    if (i === j) { 
+      
+      for(var a = 0; a < innerArray.length; a++){ 
+        if(key === innerArray[a]){  
+          innerArray[a + 1] = null; 
+        }
+      }
+    }
+  });
+ };
 
 
 /*

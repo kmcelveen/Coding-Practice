@@ -47,49 +47,82 @@ For this exercise, let's say that a tree is balanced if the minimum height and t
 A binary search tree was created by iterating over an array and inserting each element into the tree. Given a binary search tree with no duplicates, how many different arrays would result in the creation of this tree.
 
 */
+var BinarySearchTree = function(value){
+  var newBinaryTree = {};
+  newBinaryTree.left = null;
+  newBinaryTree.right = null;
+  newBinaryTree.value = value;
+  _.extend(newBinaryTree, binaryTreeMethods);
+  return newBinaryTree; 
+};
 
-function BinarySearchTree (value) {
-  this.value = value;
-  this.left = null;
-  this.right = null;
-}
 
-BinarySearchTree.prototype.insert = function(value) {
+var binaryTreeMethods = {};
+
+binaryTreeMethods.insert = function(value){
+  var findNodes = function(node) {
+      if (value < node.value){
+        if (node.left === null) {
+          node.left = new BinarySearchTree(value);
+
+        } else {
+          findNodes(node.left);
+        }
+      } else if (value > node.value) {
+          if (node.right === null) {
+            node.right = new BinarySearchTree(value);
+          } else {
+            findNodes(node.right);
+          }
+      }
+  }
+  findNodes(this);
+};
+
+
+binaryTreeMethods.contains = function(value) {
+    var result = false;
+    var currentNode = this;
+    while (currentNode) {
+      if (value < currentNode.value) {
+        currentNode = currentNode.left;
+      } else if (value > currentNode.value) {
+        currentNode = currentNode.right;
+      } else {
+        result = true;
+        return result;
+      }
+    } 
+    return result;
+};
+// Time complexity:
+
+binaryTreeMethods.traverseDepthFirst_inOrder = function(fn) {
   // implement me...
 };
 // Time complexity:
 
-BinarySearchTree.prototype.contains = function(value) {
+binaryTreeMethods.traverseDepthFirst_preOrder = function(fn) {
   // implement me...
 };
 // Time complexity:
 
-BinarySearchTree.prototype.traverseDepthFirst_inOrder = function(fn) {
+binaryTreeMethods.traverseDepthFirst_postOrder = function(fn) {
   // implement me...
 };
 // Time complexity:
 
-BinarySearchTree.prototype.traverseDepthFirst_preOrder = function(fn) {
+binaryTreeMethods.traverseBreadthFirst = function(fn) {
   // implement me...
 };
 // Time complexity:
 
-BinarySearchTree.prototype.traverseDepthFirst_postOrder = function(fn) {
+binaryTreeMethods.checkIfFull = function() {
   // implement me...
 };
 // Time complexity:
 
-BinarySearchTree.prototype.traverseBreadthFirst = function(fn) {
-  // implement me...
-};
-// Time complexity:
-
-BinarySearchTree.prototype.checkIfFull = function() {
-  // implement me...
-};
-// Time complexity:
-
-BinarySearchTree.prototype.checkIfBalanced = function() {
+binaryTreeMethods.checkIfBalanced = function() {
   // implement me...
 };
 // Time complexity:

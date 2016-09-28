@@ -87,46 +87,73 @@ traverseBF should be [ [ 1, 0 ], [ 2, 1 ], [ 4, 1 ], [ 3, 2 ], [ 5, 3 ] ]
 Given a directed graph and two nodes in the graph, write a function that indicates whether there is a route between the two nodes. Bonus: rather than returning a boolean, have your function return the shortest distance between the two nodes (the number of edges that separate them).
 
 */
-
-
-function Graph () {
-  this._nodes = {};
-}
-
-Graph.prototype.addNode = function(value) {
-  // implement me...
+var Graph = function(){
+  this.nodes = [];
+  this.edges = [];
 };
-// Time complexity:
 
-Graph.prototype.removeNode = function(value) {
-  // implement me...
+Graph.prototype.addNode = function(node){
+  this.nodes.push(node);
 };
-// Time complexity:
 
-Graph.prototype.contains = function(value) {
-  // implement me...
+Graph.prototype.contains = function(node){
+  for (var i = 0; i < this.nodes.length; i++) {
+    if (this.nodes[i] === node) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 };
-// Time complexity:
 
-Graph.prototype.addEdge = function(value1, value2) {
-  // implement me...
+Graph.prototype.removeNode = function(node){
+  for (var i = 0; i < this.nodes.length; i++) {
+    var temp = this.nodes[i];
+    delete this.nodes[i];
+    return temp;
+  }
 };
-// Time complexity:
 
-Graph.prototype.removeEdge = function(value1, value2) {
-  // implement me...
+Graph.prototype.hasEdge = function(fromNode, toNode){
+  var result = false;
+  for (var i = 0; i < this.edges.length; i++) {
+    if (fromNode === this.edges[i][0] && toNode === this.edges[i][1]){
+      result = true;
+      return result;
+    } else if (fromNode === this.edges[i][1] && toNode === this.edges[i][0]) {
+      result = true;
+      return result;
+    } 
+  }
+  return result;
 };
-// Time complexity:
 
-Graph.prototype.hasEdge = function(value1, value2) {
-  // implement me...
+Graph.prototype.addEdge = function(fromNode, toNode){
+  this.edges.push([fromNode, toNode]);
 };
-// Time complexity:
 
-Graph.prototype.forEach = function(fn) {
-  // implement me...
+Graph.prototype.removeEdge = function(fromNode, toNode){
+  var result = false;
+  for (var i = 0; i < this.edges.length; i++) {
+    if (fromNode === this.edges[i][0] && toNode === this.edges[i][1]){
+      this.edges[i][1].slice(i, 1);
+      result = true;
+      return result;
+    } else if (fromNode === this.edges[i][1] && toNode === this.edges[i][0]) {
+      this.edges[i][1].slice(i, 1);
+      result = true;
+      return result;
+    } 
+  }
+  return result;
 };
-// Time complexity:
+
+Graph.prototype.forEach = function(cb){
+  for (var i = 0; i < this.nodes.length; i++) {
+    cb(this.nodes[i]);
+  }
+};
+
 
 Graph.prototype.traverseDepthFirst = function(value, fn, visited, distance) {
   // implement me...

@@ -80,67 +80,64 @@ Reimplement stack and queue data structures using linked lists.
 
 // PART 1
 
-function Node(value) {
-  this.next = null;
-  this.value = value;
-}
+var LinkedList = function(){
+  var list = {};
+  list.head = null;
+  list.tail = null;
 
-function LinkedList(headValue) {
-  if (headValue === undefined) console.log('Must provide value for first node');
-  this.head = new Node(headValue);
-}
+  list.addToTail = function(value){
 
-LinkedList.prototype.forEach = function(callback) {
-  // implement me...
+    var newTail = Node(value);
+
+    if (!list.head) {
+      list.head = newTail;
+    }
+
+    if (list.tail) {
+      list.tail.next = newTail;
+    }
+
+    list.tail = newTail;
+    };
+
+  list.removeHead = function(){
+
+    if (list.head === null){
+      return null;
+    }
+
+    var currentHead = list.head;
+    list.head = list.head.next;
+
+    return currentHead.value;
+      };
+
+  list.contains = function(target){
+
+    var node = list.head;
+
+    while (node) {
+      if (node.value === target) {
+        return true;
+      }
+
+      node = node.next;
+    }
+
+    return false;
+      };
+
+  return list;
 };
-// Time complexity:
 
-LinkedList.prototype.print = function() {
-  // implement me...
+var Node = function(value){
+  var node = {};
+
+  node.value = value;
+  node.next = null;
+
+  return node;
 };
-// Time complexity:
-
-LinkedList.prototype.insertAfter = function(node, value) {
-  // implement me...
-};
-// Time complexity:
-
-LinkedList.prototype.removeAfter = function(node) {
-  // implement me...
-};
-// Time complexity:
-
-LinkedList.prototype.insertHead = function(value) {
-  // implement me...
-};
-// Time complexity:
-
-LinkedList.prototype.removeHead = function() {
-  // implement me...
-}
-
-LinkedList.prototype.findNode = function(value) {
-  // implement me...
-};
-// Time complexity:
-
-LinkedList.prototype.appendToTail = function(value) {
-  // implement me...
-};
-// Time complexity:
-
-
-// PART 2:
-
-LinkedList.prototype.insertBefore = function(node, value) {
-  // implement me...
-};
-// Time complexity:
-
-LinkedList.prototype.removeBefore = function(node) {
-  // implement me...
-};
-// Time complexity:
 
 
 
